@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.2.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+}
+
+group = 'be.raft.crafty.plugin'
+version = project_version
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
+
+    implementation project(":")
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.8.8")
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+//Only build shadowJar
+build.dependsOn(shadowJar)
+jar.enabled = false

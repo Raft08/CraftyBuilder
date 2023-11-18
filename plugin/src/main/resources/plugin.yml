@@ -1,0 +1,4 @@
+  name: "CraftyBuilder-Test"
+  description: "Test Plugin for CraftyBuilder Library"
+  main: "be.raft.crafty.plugin.CraftyTestPlugin"
+  version: "${version}"
