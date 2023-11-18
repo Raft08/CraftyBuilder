@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'be.raft.crafty'
@@ -19,4 +20,47 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
+}
+
+tasks.register('sourceJar', Jar) {
+    group 'build'
+    from sourceSets.main.allSource
+    archiveClassifier.set('sources')
+    archiveBaseName = 'ContentWork-api'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            groupId = 'be.raft.crafty'
+            artifactId = 'crafty-builder'
+            version = project_version
+
+            from components.java
+            pom {
+                name = 'CraftyBuilder'
+                description = 'Utility Library to make building Spigot Components more simpler'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/AtlasWorldMC/ContentWork/blob/main/LICENSE'
+                    }
+                }
+            }
+
+            // Attach the sources jar
+            artifact sourceJar
+        }
+    }
+    repositories {
+        maven {
+            name 'AtlasWorld-Releases'
+            url 'https://repository.atlasworld.fr/repository/maven-release/'
+            credentials {
+                username = "$maven_user"
+                password = "$maven_password"
+            }
+        }
+    }
 }
