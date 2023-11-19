@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'be.raft.crafty'
-version = project_version
+version = "${minecraft_version}-${project_version}"
 
 repositories {
     mavenCentral()
