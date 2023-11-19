@@ -1,4 +1,4 @@
-name: Publish package to the Maven Central Repository
+name: Publish
 on: [push]
 jobs:
   publish:
@@ -17,6 +17,9 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
+      - name: make gradle wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
       - name: Publish package
         run: ./gradlew publish
         env:
