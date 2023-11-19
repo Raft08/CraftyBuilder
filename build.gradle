@@ -29,6 +29,10 @@ tasks.register('sourceJar', Jar) {
     archiveBaseName = 'CraftyBuilder'
 }
 
+build {
+    dependsOn sourceJar
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
