@@ -37,7 +37,7 @@ public class ItemBuilder {
      * @param appender consumer that adds lines to the lore.
      */
     public ItemBuilder loreAppender(Consumer<List<String>> appender) {
-        List<String> lore = new ArrayList<>();
+        List<String> lore = this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>();
         appender.accept(lore);
         this.meta.setLore(lore);
         return this;
