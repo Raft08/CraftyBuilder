@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -47,7 +48,7 @@ public class ItemBuilder {
      * @param lines lines to add to the lore.
      */
     public ItemBuilder setLore(String... lines) {
-        this.meta.setLore(List.of(lines));
+        this.meta.setLore(Arrays.asList(lines));
         return this;
     }
 
