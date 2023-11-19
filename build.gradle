@@ -3,8 +3,10 @@ plugins {
     id 'maven-publish'
 }
 
+def full_version = "${minecraft_version}-${project_version}"
+
 group = 'be.raft.crafty'
-version = "${minecraft_version}-${project_version}"
+version = full_version
 
 repositories {
     mavenCentral()
@@ -39,7 +41,7 @@ publishing {
 
             groupId = 'be.raft.crafty'
             artifactId = 'crafty-builder'
-            version = project_version
+            version = full_version
 
             from components.java
             pom {
