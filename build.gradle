@@ -55,11 +55,11 @@ publishing {
     }
     repositories {
         maven {
-            name 'AtlasWorld-Releases'
+            name 'AtlasWorld-Release'
             url 'https://repository.atlasworld.fr/repository/maven-release/'
             credentials {
-                username = "$maven_user"
-                password = "$maven_password"
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
