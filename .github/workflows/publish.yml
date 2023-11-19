@@ -19,7 +19,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
-      - name: make gradle wrapper executable
+      - name: Make Gradle Executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
       - name: Publish package
