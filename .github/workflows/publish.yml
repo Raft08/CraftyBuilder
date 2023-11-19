@@ -21,7 +21,9 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
       - name: Publish package
-        run: ./gradlew publish
+        uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+        with:
+          arguments: publish
         env:
           MAVEN_USERNAME: ${{ secrets.REPOSITORY_USER }}
           MAVEN_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
