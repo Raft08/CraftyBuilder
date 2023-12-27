@@ -1,6 +1,8 @@
 package be.raft.crafty.plugin;
 
-import be.raft.crafty.ItemBuilder;
+import be.raft.crafty.Color;
+import be.raft.crafty.item.DyeBuilder;
+import be.raft.crafty.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,4 +18,9 @@ public class CraftyItems {
             .amount(32)
             .setLore("This is the first line!", "This is the second line!")
             .build();
+
+    public static final ItemStack DYE_ITEM = DyeBuilder.create(Material.INK_SACK)
+            .setColor(Color.BLACK)
+            .build();
+
 }
