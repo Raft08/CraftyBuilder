@@ -20,7 +20,7 @@ public class DyeBuilder extends ItemBuilder {
     }
 
     /**
-     * Set the color of the dye with a byte
+     * Set the color of the dye using a byte
      * @param data byte of the color
      */
     @SuppressWarnings("deprecation")

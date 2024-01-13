@@ -12,7 +12,7 @@ public class PotionBuilder extends ItemBuilder {
     }
 
     /**
-     * Adds a custom potion effect to this potion
+     * Adds a custom potion effect to this potion.
      * @param potionEffect potion effect
      */
     public PotionBuilder addCustomPotionEffect(PotionEffect potionEffect) {
@@ -20,7 +20,7 @@ public class PotionBuilder extends ItemBuilder {
     }
 
     /**
-     * Adds a custom potion effect to this potion
+     * Adds a custom potion effect to this potion.
      * @param potionEffect potion effect
      * @param overwrite true if any existing effect of the same type should be overwritten
      */
@@ -29,7 +29,7 @@ public class PotionBuilder extends ItemBuilder {
     }
 
     /**
-     * Removes a potion effect from the potion
+     * Removes a potion effect from the potion.
      * @param type potion effect type
      */
     public PotionBuilder removeCustomPotionEffect(PotionEffectType type) {
@@ -37,7 +37,7 @@ public class PotionBuilder extends ItemBuilder {
     }
 
     /**
-     * Moves a potion effect to the top of the potion effect list
+     * Moves a potion effect to the top of the potion effect list.
      * @param type potion effect type
      */
     public PotionBuilder setMainEffect(PotionEffectType type) {
@@ -46,7 +46,7 @@ public class PotionBuilder extends ItemBuilder {
 
     /**
      * Create a Builder from an {@link ItemStack}.
-     * @param stack item stack
+     * @param stack item stack 
      */
     public static PotionBuilder create(ItemStack stack) {
         return new PotionBuilder(stack, (PotionMeta) stack.getItemMeta());
