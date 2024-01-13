@@ -3,8 +3,11 @@ package be.raft.crafty.plugin;
 import be.raft.crafty.Color;
 import be.raft.crafty.item.DyeBuilder;
 import be.raft.crafty.item.ItemBuilder;
+import be.raft.crafty.item.PotionBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class CraftyItems {
     public static final ItemStack MY_CUSTOM_ITEM = ItemBuilder.create(Material.STICK)
@@ -23,4 +26,8 @@ public class CraftyItems {
             .setColor(Color.BLACK)
             .build();
 
+    public static final ItemStack POTION_ITEM = PotionBuilder.create(Material.POTION)
+            .setMainEffect(PotionEffectType.ABSORPTION)
+            .addCustomPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30*20, 4))
+            .build();
 }

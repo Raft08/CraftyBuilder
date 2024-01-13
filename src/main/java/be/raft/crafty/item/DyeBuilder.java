@@ -7,15 +7,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 public class DyeBuilder extends ItemBuilder {
-
     protected DyeBuilder(ItemStack stack, ItemMeta meta) {
         super(stack, meta);
     }
 
+    /**
+     * Set the color of the dye
+     * @param color color
+     */
     public DyeBuilder setColor(Color color) {
         return this.setColor(color.getData());
     }
 
+    /**
+     * Set the color of the dye with a byte
+     * @param data byte of the color
+     */
     @SuppressWarnings("deprecation")
     public DyeBuilder setColor(byte data) {
         MaterialData mData = new MaterialData(this.stack.getType(), data);
