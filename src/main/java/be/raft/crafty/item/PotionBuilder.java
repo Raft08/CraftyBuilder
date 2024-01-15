@@ -6,6 +6,8 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+
 public class PotionBuilder extends ItemBuilder {
     protected PotionBuilder(ItemStack stack, PotionMeta meta) {
         super(stack, meta);
@@ -16,7 +18,8 @@ public class PotionBuilder extends ItemBuilder {
      * @param potionEffect potion effect
      */
     public PotionBuilder addCustomPotionEffect(PotionEffect potionEffect) {
-        return this.addCustomPotionEffect(potionEffect);
+        ((PotionMeta) meta).addCustomEffect(potionEffect, false);
+        return this;
     }
 
     /**
@@ -25,7 +28,8 @@ public class PotionBuilder extends ItemBuilder {
      * @param overwrite true if any existing effect of the same type should be overwritten
      */
     public PotionBuilder addCustomPotionEffect(PotionEffect potionEffect, boolean overwrite) {
-        return this.addCustomPotionEffect(potionEffect, overwrite);
+        ((PotionMeta) meta).addCustomEffect(potionEffect, overwrite);
+        return this;
     }
 
     /**
@@ -33,7 +37,8 @@ public class PotionBuilder extends ItemBuilder {
      * @param type potion effect type
      */
     public PotionBuilder removeCustomPotionEffect(PotionEffectType type) {
-        return this.removeCustomPotionEffect(type);
+        ((PotionMeta) meta).removeCustomEffect(type);
+        return this;
     }
 
     /**
@@ -41,7 +46,8 @@ public class PotionBuilder extends ItemBuilder {
      * @param type potion effect type
      */
     public PotionBuilder setMainEffect(PotionEffectType type) {
-        return this.setMainEffect(type);
+        ((PotionMeta) meta).setMainEffect(type);
+        return this;
     }
 
     /**

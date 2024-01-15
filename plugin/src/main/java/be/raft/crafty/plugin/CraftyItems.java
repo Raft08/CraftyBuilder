@@ -27,7 +27,7 @@ public class CraftyItems {
             .build();
 
     public static final ItemStack POTION_ITEM = PotionBuilder.create(Material.POTION)
-            .setMainEffect(PotionEffectType.ABSORPTION)
+            .setMainEffect(PotionEffectType.HEAL)
             .addCustomPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30*20, 4))
             .build();
 }
