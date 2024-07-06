@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.security.Key;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +19,8 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     private String displayName;
     private List<String> lore;
     private int amount;
-    private HashMap<Enchantment, Integer> enchantments;
-    private List<ItemFlag> itemFlags;
+    private final HashMap<Enchantment, Integer> enchantments;
+    private final List<ItemFlag> itemFlags;
     private short durability;
 
     protected ItemBuilder(ItemStack stack) {

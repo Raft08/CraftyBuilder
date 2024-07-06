@@ -51,6 +51,14 @@ Code is fully documented, see the javadoc for method listing.
         .build();
 ````
 
+### PotionBuilder
+````java
+    public static final ItemStack POTION_ITEM = PotionBuilder.create(Material.POTION)
+        .addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*30, 0))
+        .mainEffect(PotionEffectType.SPEED)
+        .build();
+````
+
 ## Contributing:
 Anybody can contribute by opening a [pull request](https://github.com/Raft08/CraftyBuilder/pulls).
 I would really appreciate if you want to make this code base better! I don't have any code guidelines, 
