@@ -5,23 +5,34 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
-import java.util.ArrayList;
+import java.security.Key;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Item Builder, create new items by chaining functions!
  */
 public class ItemBuilder<T extends ItemBuilder<T>> {
     protected final ItemStack stack;
-    protected final ItemMeta meta;
 
-    protected ItemBuilder(ItemStack stack, ItemMeta meta) {
+    private String displayName;
+    private List<String> lore;
+    private int amount;
+    private HashMap<Enchantment, Integer> enchantments;
+    private List<ItemFlag> itemFlags;
+    private short durability;
+
+    protected ItemBuilder(ItemStack stack) {
         this.stack = stack;
-        this.meta = meta;
+
+        displayName = "";
+        lore = List.of();
+        amount = 1;
+        enchantments = new HashMap<>();
+        itemFlags = List.of();
+        durability = 0;
     }
 
     /**
@@ -29,18 +40,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param displayName display name for the item.
      */
     public ItemBuilder<T> displayName(String displayName) {
-        this.meta.setDisplayName(displayName);
-        return this;
-    }
-
-    /**
-     * Appends lore to already existing lore list.
-     * @param appender consumer that adds lines to the lore.
-     */
-    public ItemBuilder<T> loreAppender(Consumer<List<String>> appender) {
-        List<String> lore = this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>();
-        appender.accept(lore);
-        this.meta.setLore(lore);
+        this.displayName = displayName;
         return this;
     }
 
@@ -49,7 +49,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param lines lines to add to the lore.
      */
     public ItemBuilder<T> setLore(String... lines) {
-        this.meta.setLore(Arrays.asList(lines));
+        this.lore = List.of(lines);
         return this;
     }
 
@@ -58,28 +58,17 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param amount amount of items.
      */
     public ItemBuilder<T> amount(int amount) {
-        this.stack.setAmount(amount);
+        this.amount = amount;
         return this;
     }
 
     /**
      * Adds an enchantment to the item.
-     * Use {@link #addEnchant(Enchantment, int, boolean)} to prevent bypass level restriction.
      * @param enchantment the enchantment to add.
      * @param level the level of the enchantment.
      */
     public ItemBuilder<T> addEnchant(Enchantment enchantment, int level) {
-        return this.addEnchant(enchantment, level, false);
-    }
-
-    /**
-     * Adds an enchantment to the item.
-     * @param enchantment the enchantment to add.
-     * @param level the level of the enchantment.
-     * @param ignoreLevelRestriction prevent bypass of the level restriction.
-     */
-    public ItemBuilder<T> addEnchant(Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
-        this.meta.addEnchant(enchantment, level, ignoreLevelRestriction);
+        this.enchantments.put(enchantment, level);
         return this;
     }
 
@@ -88,7 +77,8 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param flags flags to add.
      */
     public ItemBuilder<T> addItemFlags(ItemFlag... flags) {
-        this.meta.addItemFlags(flags);
+        itemFlags.addAll(Arrays.asList(flags));
+
         return this;
     }
 
@@ -98,12 +88,8 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      */
 
     public ItemBuilder<T> setDurability(short durability) {
-        this.stack.setDurability(durability);
-        return this;
-    }
+        this.durability = durability;
 
-    public ItemBuilder<T> setData(MaterialData data) {
-        this.stack.setData(data);
         return this;
     }
 
@@ -113,7 +99,27 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      */
     public ItemStack build() {
         ItemStack buildStack = new ItemStack(this.stack);
-        buildStack.setItemMeta(this.meta);
+        ItemMeta buildMeta = buildStack.getItemMeta();
+
+        if (!this.displayName.isEmpty()) {
+            buildMeta.setDisplayName(this.displayName);
+        }
+
+        if (!this.lore.isEmpty()) {
+            buildMeta.setLore(this.lore);
+        }
+
+        if (!this.itemFlags.isEmpty()) {
+            itemFlags.forEach(buildMeta::addItemFlags);
+        }
+
+        buildStack.setAmount(this.amount);
+
+        enchantments.forEach((ench, level) -> buildMeta.addEnchant(ench, level, true));
+
+        buildStack.setDurability(this.durability);
+
+        buildStack.setItemMeta(buildMeta);
 
         return buildStack;
     }
@@ -123,7 +129,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param stack item stack
      */
     public static ItemBuilder<?> create(ItemStack stack) {
-        return new ItemBuilder<>(stack, stack.getItemMeta());
+        return new ItemBuilder<>(stack);
     }
 
     /**
