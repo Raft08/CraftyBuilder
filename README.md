@@ -1,4 +1,9 @@
 # Crafty Builder
+
+> [!WARNING]
+> - This project is no longer maintained by the Original Author ([RaftDev](https://github.com/Raft08)).
+> - If you have any issues or suggestions, contact the new maintainer ([ItsArt3x54](https://github.com/ItsArt3x54)) or open an issue.
+
 Simple & Lightweight library to allow the usage of the Builder Design Pattern for simple Spigot & Paper Components.
 
 ### Gradle :
