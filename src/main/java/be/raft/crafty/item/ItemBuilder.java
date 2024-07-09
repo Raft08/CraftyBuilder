@@ -5,29 +5,45 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-/**
- * Item Builder, create new items by chaining functions!
- */
 public class ItemBuilder<T extends ItemBuilder<T>> {
     protected final ItemStack stack;
 
-    private String displayName = "";
-    private List<String> lore = Collections.emptyList();
-    private int amount = 1;
-    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
-    private final Set<ItemFlag> itemFlags = EnumSet.noneOf(ItemFlag.class);
-    private short durability = 0;
+    private String displayName;
+    private List<String> lore;
+    private int amount;
+    private final HashMap<Enchantment, Integer> enchantments;
+    private final List<ItemFlag> itemFlags;
+    private short durability;
+
+    // Potion-specific fields
+    private PotionEffectType mainEffect;
+    private final List<PotionEffect> potionEffects;
 
     protected ItemBuilder(ItemStack stack) {
         this.stack = stack;
+
+        displayName = "";
+        lore = new ArrayList<>();
+        amount = 1;
+        enchantments = new HashMap<>();
+        itemFlags = new ArrayList<>();
+        durability = 0;
+
+        // Initialize potion-specific fields
+        mainEffect = null;
+        potionEffects = new ArrayList<>();
     }
 
     /**
      * Sets the display name for the item.
      * @param displayName display name for the item.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> displayName(String displayName) {
         this.displayName = displayName;
@@ -37,6 +53,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     /**
      * Adds lore to the item, this will override the previously set lore.
      * @param lines lines to add to the lore.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> setLore(String... lines) {
         this.lore = Arrays.asList(lines);
@@ -46,6 +63,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     /**
      * Sets the amount of items.
      * @param amount amount of items.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> amount(int amount) {
         this.amount = amount;
@@ -56,6 +74,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * Adds an enchantment to the item.
      * @param enchantment the enchantment to add.
      * @param level the level of the enchantment.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> addEnchant(Enchantment enchantment, int level) {
         this.enchantments.put(enchantment, level);
@@ -65,15 +84,17 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     /**
      * Add item flags to the item.
      * @param flags flags to add.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> addItemFlags(ItemFlag... flags) {
-        Collections.addAll(this.itemFlags, flags);
+        itemFlags.addAll(Arrays.asList(flags));
         return this;
     }
 
     /**
      * Sets the durability of the item.
-     * @param durability durability of the item
+     * @param durability durability of the item.
+     * @return this ItemBuilder instance for method chaining.
      */
     public ItemBuilder<T> setDurability(short durability) {
         this.durability = durability;
@@ -81,8 +102,28 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     }
 
     /**
-     * Builds the item.
-     * @return the build item.
+     * Sets the main potion effect of the potion.
+     * @param type the type of the main effect to give to the potion.
+     * @return this ItemBuilder instance for method chaining.
+     */
+    public ItemBuilder<T> mainEffect(PotionEffectType type) {
+        this.mainEffect = type;
+        return this;
+    }
+
+    /**
+     * Adds a potion effect to the potion.
+     * @param effect the effect to add to the potion.
+     * @return this ItemBuilder instance for method chaining.
+     */
+    public ItemBuilder<T> addPotionEffect(PotionEffect effect) {
+        this.potionEffects.add(effect);
+        return this;
+    }
+
+    /**
+     * Builds the item stack with specified properties.
+     * @return the built item stack.
      */
     public ItemStack build() {
         ItemStack buildStack = new ItemStack(this.stack);
@@ -97,15 +138,29 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         }
 
         if (!this.itemFlags.isEmpty()) {
-            buildMeta.addItemFlags(this.itemFlags.toArray(new ItemFlag[0]));
+            itemFlags.forEach(buildMeta::addItemFlags);
         }
 
-        this.enchantments.forEach((ench, level) -> buildMeta.addEnchant(ench, level, true));
-
         buildStack.setAmount(this.amount);
+
+        enchantments.forEach((ench, level) -> buildMeta.addEnchant(ench, level, true));
+
         buildStack.setDurability(this.durability);
 
         buildStack.setItemMeta(buildMeta);
+
+        // Handle potion specific meta if applicable
+        if (buildMeta instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta) buildMeta;
+
+            if (mainEffect != null) {
+                potionMeta.setMainEffect(mainEffect);
+            }
+
+            potionEffects.forEach(effect -> potionMeta.addCustomEffect(effect, false));
+
+            buildStack.setItemMeta(potionMeta);
+        }
 
         return buildStack;
     }
@@ -113,6 +168,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     /**
      * Create a Builder from an {@link ItemStack}.
      * @param stack item stack
+     * @return a new ItemBuilder instance.
      */
     public static ItemBuilder<?> create(ItemStack stack) {
         return new ItemBuilder<>(stack);
@@ -121,6 +177,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     /**
      * Create a Builder from a defined {@link Material}.
      * @param material material
+     * @return a new ItemBuilder instance.
      */
     public static ItemBuilder<?> create(Material material) {
         return ItemBuilder.create(new ItemStack(material));

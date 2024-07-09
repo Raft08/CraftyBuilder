@@ -25,6 +25,5 @@ public class CraftyTestPlugin extends JavaPlugin implements Listener {
         event.getPlayer().getInventory().addItem(CraftyItems.MULTILINE_LORE_ITEM);
         event.getPlayer().getInventory().addItem(CraftyItems.MY_CUSTOM_ITEM);
         event.getPlayer().getInventory().addItem(CraftyItems.POTION_ITEM);
-        event.getPlayer().getInventory().addItem(CraftyItems.DYE_ITEM);
     }
 }
