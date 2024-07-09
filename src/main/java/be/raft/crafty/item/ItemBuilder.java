@@ -6,9 +6,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Item Builder, create new items by chaining functions!
@@ -16,22 +14,15 @@ import java.util.List;
 public class ItemBuilder<T extends ItemBuilder<T>> {
     protected final ItemStack stack;
 
-    private String displayName;
-    private List<String> lore;
-    private int amount;
-    private final HashMap<Enchantment, Integer> enchantments;
-    private final List<ItemFlag> itemFlags;
-    private short durability;
+    private String displayName = "";
+    private List<String> lore = Collections.emptyList();
+    private int amount = 1;
+    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
+    private final Set<ItemFlag> itemFlags = EnumSet.noneOf(ItemFlag.class);
+    private short durability = 0;
 
     protected ItemBuilder(ItemStack stack) {
         this.stack = stack;
-
-        displayName = "";
-        lore = List.of();
-        amount = 1;
-        enchantments = new HashMap<>();
-        itemFlags = List.of();
-        durability = 0;
     }
 
     /**
@@ -48,7 +39,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * @param lines lines to add to the lore.
      */
     public ItemBuilder<T> setLore(String... lines) {
-        this.lore = List.of(lines);
+        this.lore = Arrays.asList(lines);
         return this;
     }
 
@@ -72,12 +63,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     }
 
     /**
-     * Add an item flags to the item.
+     * Add item flags to the item.
      * @param flags flags to add.
      */
     public ItemBuilder<T> addItemFlags(ItemFlag... flags) {
-        itemFlags.addAll(Arrays.asList(flags));
-
+        Collections.addAll(this.itemFlags, flags);
         return this;
     }
 
@@ -85,20 +75,18 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      * Sets the durability of the item.
      * @param durability durability of the item
      */
-
     public ItemBuilder<T> setDurability(short durability) {
         this.durability = durability;
-
         return this;
     }
 
     /**
-     * Build the item.
-     * @return the built item.
+     * Builds the item.
+     * @return the build item.
      */
     public ItemStack build() {
         ItemStack buildStack = new ItemStack(this.stack);
-        ItemMeta buildMeta = buildStack.getItemMeta();
+        ItemMeta buildMeta = this.stack.getItemMeta();
 
         if (!this.displayName.isEmpty()) {
             buildMeta.setDisplayName(this.displayName);
@@ -109,13 +97,12 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         }
 
         if (!this.itemFlags.isEmpty()) {
-            itemFlags.forEach(buildMeta::addItemFlags);
+            buildMeta.addItemFlags(this.itemFlags.toArray(new ItemFlag[0]));
         }
 
+        this.enchantments.forEach((ench, level) -> buildMeta.addEnchant(ench, level, true));
+
         buildStack.setAmount(this.amount);
-
-        enchantments.forEach((ench, level) -> buildMeta.addEnchant(ench, level, true));
-
         buildStack.setDurability(this.durability);
 
         buildStack.setItemMeta(buildMeta);

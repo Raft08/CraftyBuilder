@@ -2,6 +2,7 @@ package be.raft.crafty.plugin;
 
 import be.raft.crafty.item.ItemBuilder;
 import be.raft.crafty.item.PotionBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -22,5 +23,9 @@ public class CraftyItems {
     public static final ItemStack POTION_ITEM = PotionBuilder.create(Material.POTION)
             .addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*30, 0))
             .mainEffect(PotionEffectType.SPEED)
+            .build();
+
+    public static final ItemStack DYE_ITEM = ItemBuilder.create(Material.INK_SACK)
+            .displayName(ChatColor.GREEN + "Blue dye")
             .build();
 }

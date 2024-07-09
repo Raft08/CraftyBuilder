@@ -7,14 +7,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PotionBuilder<T extends ItemBuilder<T>> extends ItemBuilder<T> {
     private PotionEffectType mainEffect;
-    private final ArrayList<PotionEffect> potionEffects;
+    private final List<PotionEffect> potionEffects;
 
     protected PotionBuilder(ItemStack stack) {
         super(stack);
-
         mainEffect = null;
         potionEffects = new ArrayList<>();
     }
@@ -38,41 +38,28 @@ public class PotionBuilder<T extends ItemBuilder<T>> extends ItemBuilder<T> {
     }
 
     /**
-     * Build the item.
-     * @return the built item.
+     * Builds the item.
+     * @return the build item.
      */
+    @Override
     public ItemStack build() {
         ItemStack buildStack = new ItemStack(this.stack);
-        PotionMeta buildMeta = (PotionMeta) buildStack.getItemMeta();
+        PotionMeta buildMeta = (PotionMeta) this.stack.getItemMeta();
 
         if (mainEffect != null) {
             buildMeta.setMainEffect(mainEffect);
         }
 
-        if (!potionEffects.isEmpty()) {
-            potionEffects.forEach(potionEffect -> buildMeta.addCustomEffect(potionEffect, false));
-        }
+        potionEffects.forEach(effect -> buildMeta.addCustomEffect(effect, false));
 
         buildStack.setItemMeta(buildMeta);
-
         return buildStack;
     }
 
     /**
      * Create a Builder from an {@link ItemStack}.
-     * @param stack item stack
      */
-    public static PotionBuilder<?> create(ItemStack stack) {
-        return new PotionBuilder<>(stack);
+    public static PotionBuilder<?> create() {
+        return new PotionBuilder<>(new ItemStack(Material.POTION));
     }
-
-    /**
-     * Create a Builder from a defined {@link Material}.
-     * @param material material
-     */
-    public static PotionBuilder<?> create(Material material) {
-        return PotionBuilder.create(new ItemStack(material));
-    }
-
-
 }
