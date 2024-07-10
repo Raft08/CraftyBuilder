@@ -54,9 +54,6 @@ publishing {
                     }
                 }
             }
-
-            // Attach the sources jar
-            artifact sourceJar
         }
     }
     repositories {
@@ -69,4 +66,9 @@ publishing {
             }
         }
     }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
