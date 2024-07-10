@@ -22,5 +22,5 @@ public class CraftyItems {
             .addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*30, 0))
             .mainEffect(PotionEffectType.SPEED)
             .build();
-
+    
 }

@@ -21,7 +21,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     private final List<ItemFlag> itemFlags;
     private short durability;
 
-    // Potion-specific fields
     private PotionEffectType mainEffect;
     private final List<PotionEffect> potionEffects;
 
@@ -35,7 +34,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         itemFlags = new ArrayList<>();
         durability = 0;
 
-        // Initialize potion-specific fields
         mainEffect = null;
         potionEffects = new ArrayList<>();
     }
@@ -149,7 +147,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         buildStack.setItemMeta(buildMeta);
 
-        // Handle potion specific meta if applicable
         if (buildMeta instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) buildMeta;
 
@@ -181,5 +178,15 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
      */
     public static ItemBuilder<?> create(Material material) {
         return ItemBuilder.create(new ItemStack(material));
+    }
+
+    /**
+     * Create a Builder from a {@link Material} and a {@link Short}.
+     * @param material the material of the ItemStack to create.
+     * @param data the data of the ItemStack to create.
+     * @return a new ItemBuilder instance.
+     */
+    public static ItemBuilder<?> create(Material material, byte data) {
+        return new ItemBuilder<>(new ItemStack(material, 1, data));
     }
 }
