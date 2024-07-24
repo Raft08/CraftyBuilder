@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > - This project is no longer maintained by the Original Author ([RaftDev](https://github.com/Raft08)).
-> - If you have any issues or suggestions, contact the new maintainer ([ItsArt3x54](https://github.com/ItsArt3x54)) or open an issue.
+> - If you have any issues or suggestions, contact the new maintainer ([Artex154](https://github.com/Artex154)) or open an issue.
 
 Simple & Lightweight library to allow the usage of the Builder Design Pattern for simple Spigot & Paper Components.
 
@@ -48,17 +48,16 @@ See [Test Plugin](https://github.com/Raft08/CraftyBuilder/tree/master/plugin/src
 Code is fully documented, see the javadoc for method listing.
 ### ItemBuilder
 ````java
-    public static final ItemStack MY_CUSTOM_ITEM = ItemBuilder.create(Material.STICK)
+    public static final ItemStack MY_CUSTOM_ITEM = new ItemBuilder(new ItemStack(Material.STICK))
         .displayName("My Custom Item")
         .amount(10)
         .setLore("This is the first line!", "This is the second line!")
-        .loreAppender(append -> append.add("This is the thrird line!"))
         .build();
 ````
 
 ### PotionBuilder
 ````java
-    public static final ItemStack POTION_ITEM = PotionBuilder.create(Material.POTION)
+    public static final ItemStack POTION_ITEM = new ItemBuilder(new ItemStack(Material.POTION))
         .addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*30, 0))
         .mainEffect(PotionEffectType.SPEED)
         .build();

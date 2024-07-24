@@ -7,18 +7,18 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class CraftyItems {
-    public static final ItemStack MY_CUSTOM_ITEM = ItemBuilder.create(Material.STICK)
+    public static final ItemStack MY_CUSTOM_ITEM = new ItemBuilder<>(new ItemStack(Material.STICK))
             .displayName("My Custom Item")
             .amount(10)
             .build();
 
-    public static final ItemStack MULTILINE_LORE_ITEM = ItemBuilder.create(Material.STICK)
+    public static final ItemStack MULTILINE_LORE_ITEM = new ItemBuilder<>(new ItemStack(Material.STICK))
             .displayName("This Item's lore is multiline!")
             .amount(32)
             .setLore("This is the first line!", "This is the second line!")
             .build();
 
-    public static final ItemStack POTION_ITEM = ItemBuilder.create(Material.POTION)
+    public static final ItemStack POTION_ITEM = new ItemBuilder<>(new ItemStack(Material.POTION))
             .addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*30, 0))
             .mainEffect(PotionEffectType.SPEED)
             .build();

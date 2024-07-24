@@ -24,7 +24,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     private PotionEffectType mainEffect;
     private final List<PotionEffect> potionEffects;
 
-    protected ItemBuilder(ItemStack stack) {
+    public ItemBuilder(ItemStack stack) {
         this.stack = stack;
 
         displayName = "";
@@ -160,33 +160,5 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         }
 
         return buildStack;
-    }
-
-    /**
-     * Create a Builder from an {@link ItemStack}.
-     * @param stack item stack
-     * @return a new ItemBuilder instance.
-     */
-    public static ItemBuilder<?> create(ItemStack stack) {
-        return new ItemBuilder<>(stack);
-    }
-
-    /**
-     * Create a Builder from a defined {@link Material}.
-     * @param material material
-     * @return a new ItemBuilder instance.
-     */
-    public static ItemBuilder<?> create(Material material) {
-        return ItemBuilder.create(new ItemStack(material));
-    }
-
-    /**
-     * Create a Builder from a {@link Material} and a {@link Short}.
-     * @param material the material of the ItemStack to create.
-     * @param data the data of the ItemStack to create.
-     * @return a new ItemBuilder instance.
-     */
-    public static ItemBuilder<?> create(Material material, byte data) {
-        return new ItemBuilder<>(new ItemStack(material, 1, data));
     }
 }
